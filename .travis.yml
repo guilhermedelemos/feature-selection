@@ -5,8 +5,6 @@ jdk:
 addons:
   sonarcloud:
     organization: "guilhermedelemos-github"
-    token:
-      secure: "I8oiMKu3VXP6sK4717DA8NJedPt0ecgFw+tOcsLGcYpMywoz8Rmd9T/ziRANND4WdKTrxtM2wZOMWuj7jeDMc7RzQuAejCG0LZ+dGak5gzfSa6fs/2zE05Nl/0MYe+9zpTNyB4KU3+UP/3gAOQ7PWCSrvHzMvjsHDmMlSLxDiYWm2tv9dyXpBGVq42/RewGdl/03LxNUqnfumJcTMgsQ9YTLgl3iZ0WCWj9ZvpHnAo71LkFZtFBm+WtPZPBXFTNNKnXDpVeR643gJfy/h/P4sQMYSn32pHUcortenlit9HRRgRLMCleEE00UmmHIebv+DdPqC2+hH+bLOx2WVUOBGqDpZeNWFnKnHM4GnrqMjwvqsHmczV3IhBrGQbl+3hd3SnUuOa+tl8yJTq073W2IgoaMUl95A+gqjYG8DuMjCGtwgHgiZbJKx/NGSboeurjzm317YD0sspEH5yRcN5+tPV+TimhkS+kNcn1+7mJ8e0ij8/Q+hbJ9RLEbdZdNhX+AqbbpiY4AmCXQtbq/5vMDMHpZk44k6Pu+lKclQ/utOLfwvy30EsmsRcdWg0/lkj3LUrvY9kpq+io8olfEo/XLFunrcjBf2w/1ToZksJWHbry3gcUzO3r8F9g2lMseNByPoVcDNqDhE4H2goQw+e1V+h1i7gyBdtmocyuh49yRCQU="
 script:
   - ./gradlew sonarqube
 cache:

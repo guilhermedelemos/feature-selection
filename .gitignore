@@ -29,3 +29,8 @@ build/
 # Idea IntelliJ
 .idea/
 *.iml
+out/
+
+# Project
+dataset/
+*.txt

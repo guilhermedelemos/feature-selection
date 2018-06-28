@@ -1,6 +1,7 @@
 package io.github.guilhermedelemos.fs;
 
 import io.github.guilhermedelemos.Log;
+import io.github.guilhermedelemos.fs.gui.AppFx;
 import weka.classifiers.trees.J48;
 import weka.classifiers.trees.RandomForest;
 
@@ -12,10 +13,23 @@ public class App {
     }
 
     public static void main(String[] args) {
-        App app = new App();
-        //app.executeStandard();
-        //app.executeEvaluation();
-        app.executeBruteForce();
+        if(args.length == 0) {
+            App app = new App();
+            app.executeStandard();
+        } else {
+            if(args[0].equals("GUI")) {
+                AppFx.main(args);
+            } else if(args[0].equals("E")) {
+                App app = new App();
+                app.executeEvaluation();
+            } else if(args[0].equals("B")) {
+                App app = new App();
+                app.executeBruteForce();
+            } else {
+                App app = new App();
+                app.executeStandard();
+            }
+        }
     }
 
     public void executeStandard() {

@@ -373,7 +373,8 @@ public class FeatureSelection {
     }
 
     private double calculateFitness(Element e) {
-        double result = -1.0; //ThreadLocalRandom.current().nextDouble();
+        return calculateFitnessCrossValidation(e);
+        /*double result = -1.0; //ThreadLocalRandom.current().nextDouble();
         if (this.learningDataset.equals("") || this.testDataset.equals("")) {
             return ThreadLocalRandom.current().nextDouble();
         }
@@ -405,17 +406,49 @@ public class FeatureSelection {
             this.countFiles++;
 
             Evaluation eval = this.evaluate(newLearningData, newTestData);
+            result = eval.weightedFMeasure();
+        } catch (Exception ex) {
+            return -1;
+        }
+        return result;*/
+    }
 
-            /*this.log.add("WEKA: " + eval.toSummaryString("\nResults\n======\n", false));
-            this.log.add("WEKA CORRECT: " + eval.correct());
-            this.log.add("WEKA CORRECT (%): " + eval.pctCorrect());
-            this.log.add("WEKA INCORRECT: " + eval.incorrect());
-            this.log.add("WEKA INCORRECT (%): " + eval.pctIncorrect());
-            this.log.add("WEKA KAPPA: " + eval.kappa());*/
-            // :)
-            //result = eval.fMeasure(0);
-            //result = eval.fMeasure(1);
-            //result = eval.pctCorrect()/100;
+    private double calculateFitnessCrossValidation(Element e) {
+        double result = -1.0; //ThreadLocalRandom.current().nextDouble();
+        if (this.learningDataset.equals("") || this.testDataset.equals("")) {
+            return ThreadLocalRandom.current().nextDouble();
+        }
+        try {
+            DataSource learningDataSource = new DataSource(this.learningDataset);
+            Instances learningData = learningDataSource.getDataSet();
+            if (learningData.classIndex() == -1) {
+                learningData.setClassIndex(learningData.numAttributes() - 1);
+            }
+
+            // FILTER
+            Instances newLearningData = this.filterData(e, learningData);
+            ArffSaver saver = new ArffSaver();
+            saver.setInstances(newLearningData);
+            saver.setFile(new File("dataset" + File.separator + "result" + File.separator + "exe-learning-" + this.countFiles + ".arff"));
+            saver.writeBatch();
+            this.countFiles++;
+
+            Evaluation eval = null;
+            Classifier cls = null;
+            try {
+                if(this.classifier instanceof J48) {
+                    cls = new J48();
+                    cls.buildClassifier(learningData);
+                } else if(this.classifier instanceof RandomForest) {
+                    cls = new RandomForest();
+                    cls.buildClassifier(learningData);
+                }
+                eval = new Evaluation(learningData);
+                //eval.evaluateModel(cls, testData);
+                eval.crossValidateModel(cls, learningData, 10, new Random(1));
+            } catch (Exception exp) {
+                return -1;
+            }
             result = eval.weightedFMeasure();
         } catch (Exception ex) {
             return -1;

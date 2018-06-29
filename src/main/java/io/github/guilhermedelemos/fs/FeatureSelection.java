@@ -438,14 +438,13 @@ public class FeatureSelection {
             try {
                 if(this.classifier instanceof J48) {
                     cls = new J48();
-                    cls.buildClassifier(learningData);
                 } else if(this.classifier instanceof RandomForest) {
                     cls = new RandomForest();
-                    cls.buildClassifier(learningData);
                 }
-                eval = new Evaluation(learningData);
+                cls.buildClassifier(newLearningData);
+                eval = new Evaluation(newLearningData);
                 //eval.evaluateModel(cls, testData);
-                eval.crossValidateModel(cls, learningData, 10, new Random(1));
+                eval.crossValidateModel(cls, newLearningData, 10, new Random(1));
             } catch (Exception exp) {
                 return -1;
             }

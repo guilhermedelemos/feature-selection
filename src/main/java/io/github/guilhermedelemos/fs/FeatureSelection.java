@@ -172,13 +172,20 @@ public class FeatureSelection {
             if (testData.classIndex() == -1) {
                 testData.setClassIndex(testData.numAttributes() - 1);
             }
-            Evaluation eval = this.evaluate(learningData, testData);
-            this.initialFitness = eval.pctCorrect() / 100;
-            this.setDimension(testData.numAttributes() - 1);
-            this.setRelationName(testData.relationName());
-        } catch (Exception e) {
+            //Evaluation eval = this.evaluate(learningData, testData);
+            //this.initialFitness = eval.pctCorrect() / 100;
+            this.setDimension(learningData.numAttributes() - 1);
+            this.setRelationName(learningData.relationName());
 
-        }
+            int[] chromosome = new int[this.dimension];
+            for(int i=0;i<chromosome.length;i++) {
+                chromosome[i] = 1;
+            }
+            Element e = new Element();
+            e.setChromosome(chromosome);
+            e.setFitness(this.calculateFitness(e));
+            this.initialFitness = e.getFitness();
+        } catch (Exception e) {}
     }
 
     private Element localSearch(List<Element> populacao, Element target) {
@@ -430,7 +437,7 @@ public class FeatureSelection {
             ArffSaver saver = new ArffSaver();
             saver.setInstances(newLearningData);
             saver.setFile(new File("dataset" + File.separator + "result" + File.separator + "exe-learning-" + this.countFiles + ".arff"));
-            saver.writeBatch();
+            //saver.writeBatch();
             this.countFiles++;
 
             Evaluation eval = null;
@@ -448,7 +455,7 @@ public class FeatureSelection {
             } catch (Exception exp) {
                 return -1;
             }
-            result = eval.weightedFMeasure();
+            result = eval.fMeasure(1); //weightedFMeasure();
         } catch (Exception ex) {
             return -1;
         }
